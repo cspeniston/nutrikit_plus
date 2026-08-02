@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restful import Resource, Api
 from flask_cors import CORS
 
-from api.swen_344_db_utils import *
+from server.api.db_utils import *
 from server.api.foods_api import *
 
 app = Flask(__name__) #create Flask instance

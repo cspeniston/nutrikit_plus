@@ -1,6 +1,6 @@
 from flask_restful import Resource, reqparse, request
 import json
-from .swen_344_db_utils import *
+from .db_utils import *
 from api.foods_db import *
 
 class FoodsApi(Resource):

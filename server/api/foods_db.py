@@ -1,4 +1,4 @@
-from .swen_344_db_utils import *
+from .db_utils import *
 
 def get_all_foods():
     command = "SELECT * FROM foods ORDER BY category, name;"

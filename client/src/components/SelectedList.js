@@ -5,14 +5,13 @@ export class SelectedList extends Component {
     const { items, onItemClick, selectedSelectedItem } = this.props;
 
     return (
-      <select size="5" id="selected-items">
-        {items.map((item, index) => (
-            <option
-                key={index}
-                onClick={() => onItemClick(index)}
-                selected={index === selectedSelectedItem}
-            >{item.name}
-            </option>
+      <select
+        size="5"
+        id="selected-items"
+        value={selectedSelectedItem ?? ''}
+        onChange={(e) => onItemClick(Number(e.target.value))}
+        > {items.map((item, index) => (
+        <option key={item.id} value={index}>{item.name}</option>
         ))}
       </select>
     );

@@ -1,16 +1,15 @@
-import react from 'react';
 import { Component } from "react";
-import { Container, Row, Col, Card, CardBody, CardTitle } from 'reactstrap';
-import { Label, Input, Progress, Button } from 'reactstrap';
+import { Container, Row, Col, Card, CardBody, CardTitle } from "reactstrap";
+import { Label, Input, Progress, Button } from "reactstrap";
 import { CategorySelect } from "./components/CategorySelect";
 import { MenuList } from "./components/MenuList";
 import { SelectedList } from "./components/SelectedList";
 import { AddRemoveButton } from "./components/AddRemoveButton";
 import { CalorieTracker } from "./components/CalorieTracker";
-import NutritionLabel from './components/NutritionLabel';
-import EditFoodItemModal from './components/EditFoodItemModal';
-import AddFoodItemModal from './components/AddFoodItemModal';
-import TotalLabel from './components/TotalLabel';
+import NutritionLabel from "./components/NutritionLabel";
+import EditFoodItemModal from "./components/EditFoodItemModal";
+import AddFoodItemModal from "./components/AddFoodItemModal";
+import TotalLabel from "./components/TotalLabel";
 
 export class Page extends Component {
   constructor(props) {
@@ -25,10 +24,17 @@ export class Page extends Component {
       calorieGoal: 2000,
       progress: 0,
       selectedToEdit: null,
+
+      foodData: {
+        proteins: [],
+        fruits: [],
+        vegetables: [],
+        dairy: [],
+        grains: []
+      }
     };
   }
 
-  //changing categories
   handleCategoryChange = (category) => {
     const items = this.state.foodData[category] || [];
     const firstItem = items[0] || null;
@@ -40,7 +46,6 @@ export class Page extends Component {
     });
   };
 
-  //selecting from menu list
   handleMenuItemSelect = (item) => {
     this.setState({ 
     selectedMenuItem: item,
@@ -49,7 +54,6 @@ export class Page extends Component {
   });
   };
 
-  //add to selected items
   handleAddItem = () => {
     const { selectedMenuItem } = this.state;
     if (selectedMenuItem) {
@@ -62,7 +66,6 @@ export class Page extends Component {
     }
   };
   
-  //selecting from selected list
   handleSelectItemForRemoval = (index) => {
     const selectedItem = this.state.selectedItems[index];
     this.setState({ 
@@ -71,7 +74,6 @@ export class Page extends Component {
     });
   }; 
 
-  //remove from selected list
   handleRemoveItem = () => {
     this.setState((prevState) => {
       if (prevState.selectedSelectedItem === null) return null;
@@ -86,22 +88,19 @@ export class Page extends Component {
     }, this.updateProgress);
   };
 
-
-  // toggles the edit modal
   toggleEditModal = () => {
     this.setState((prevState) => ({
       isEditFoodModalOpen: !prevState.isEditFoodModalOpen
     }));
   };
 
-  // saves edit from updated item
   handleSaveEditedItem = (updatedItem) => {
     const { selectedCategory } = this.state;
   
-    fetch(`/api/foods/${encodeURIComponent(updatedItem.name)}`, {
+    fetch('/api/foods', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...updatedItem, category: selectedCategory })
+      body: JSON.stringify(updatedItem)
     })
     .then(res => {
       if (!res.ok) throw new Error("Update failed");
@@ -114,7 +113,6 @@ export class Page extends Component {
     .catch(err => console.error("Edit item failed:", err));
   };
   
-  //new food items
   handleAddNewItem = (newItem) => {
     const { selectedCategory } = this.state;
     fetch('/api/foods', {
@@ -133,20 +131,17 @@ export class Page extends Component {
     .catch(err => console.error("Add item failed:", err));
   };  
 
-  // toggles the add modal
   toggleAddModal = () => {
     this.setState((prevState) => ({
       isAddFoodModalOpen: !prevState.isAddFoodModalOpen
     }));
   };
 
-  // changes the calorie goal
   handleCalorieGoalChange = (e) => {
     const newGoal = Number(e.target.value);
     this.setState({ calorieGoal: newGoal }, this.updateProgress);
   };
 
-  // calculates total cals
   calculateTotalCalories = () => {
     return this.state.selectedItems.reduce(
       (sum, item) => sum + Number(item.calories),
@@ -154,15 +149,12 @@ export class Page extends Component {
     );
   };
   
-  // updates progress
   updateProgress = () => {
     const totalCalories = this.calculateTotalCalories();
     const { calorieGoal } = this.state;
     const progress = calorieGoal > 0 ? Math.min((totalCalories / calorieGoal) * 100, 100) : 0;
     this.setState({ progress });
   };
-
-  //client4 from down
 
   componentDidMount() {
     this.fetchFoodDataFromServer();
@@ -190,12 +182,13 @@ export class Page extends Component {
       .catch(err => console.error("Failed to fetch food data:", err));
   };
   
-  // deletes a food item
   handleDeleteItem = (itemToDelete) => {
     if (!itemToDelete || !itemToDelete.name) return;
   
-    fetch(`/api/foods/${encodeURIComponent(itemToDelete.name)}`, {
-      method: 'DELETE'
+    fetch('/api/foods', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: itemToDelete.id })
     })
     .then(res => {
       if (!res.ok) throw new Error("Failed to delete item");
@@ -209,8 +202,7 @@ export class Page extends Component {
     .catch(err => console.error("Delete error:", err));
   };
   
-  
-  // renders
+
   render() {
     const { selectedCategory, 
             selectedItems, 

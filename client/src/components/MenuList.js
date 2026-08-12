@@ -17,9 +17,12 @@ export class MenuList extends Component {
     const { selectedCategory, foodData } = this.props;
     const menuItems = foodData[selectedCategory] || [];
     return (
-        <select size="5" value={this.state.selectedMenuItem?.name || ''} onClick={this.handleSelect}>
+        <select
+          size="5"
+          value={this.state.selectedMenuItem?.name || ''}
+          onChange={this.handleSelect}>
           {menuItems.map((item) => (
-            <option key={item.name} value={item.name}>
+            <option key={item.id} value={item.name}>
               {item.name}
             </option>
           ))}

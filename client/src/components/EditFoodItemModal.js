@@ -10,7 +10,6 @@ class EditFoodItemModal extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    // If the incoming foodItem prop has changed, update the state
     if (prevProps.foodItem !== this.props.foodItem) {
       this.setState({ item: { ...this.props.foodItem } });
     }

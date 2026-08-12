@@ -11,12 +11,5 @@ api = Api(app) #api router
 
 api.add_resource(FoodsApi,'/foods_api')
 
-if __name__ == '__main__':
-    print("Loading db");
-    exec_sql_file('foods.sql');
-    print("Starting flask");
-    app.run(debug=True), #starts Flask
-
-
-
-    
+if __name__ == "__main__":
+    app.run(debug=True)

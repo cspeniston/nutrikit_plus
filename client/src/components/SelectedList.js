@@ -11,7 +11,7 @@ export class SelectedList extends Component {
         value={selectedSelectedItem ?? ''}
         onChange={(e) => onItemClick(Number(e.target.value))}
         > {items.map((item, index) => (
-        <option key={item.id} value={index}>{item.name}</option>
+        <option key={`${item.id}-${index}`} value={index}></option>
         ))}
       </select>
     );

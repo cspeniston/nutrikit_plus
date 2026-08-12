@@ -39,10 +39,11 @@ export class Page extends Component {
     const items = this.state.foodData[category] || [];
     const firstItem = items[0] || null;
 
-    this.setState({ 
-    selectedCategory: category, 
-    selectedMenuItem: firstItem,
-    selectedSelectedItem: null
+    this.setState({
+      selectedCategory: category,
+      selectedMenuItem: firstItem,
+      selectedToEdit: firstItem,
+      selectedSelectedItem: null
     });
   };
 
@@ -95,7 +96,6 @@ export class Page extends Component {
   };
 
   handleSaveEditedItem = (updatedItem) => {
-    const { selectedCategory } = this.state;
     fetch('/api/foods', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -161,7 +161,13 @@ export class Page extends Component {
   
   fetchFoodDataFromServer = () => {
     fetch('/api/foods')
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to load foods: ${response.status}`);
+        }
+
+        return response.json();
+      })
       .then(data => {
         const organized = {
           proteins: [],
@@ -170,15 +176,20 @@ export class Page extends Component {
           grains: [],
           dairy: []
         };
+
         data.forEach(item => {
           const category = item.category.toLowerCase();
+
           if (organized[category]) {
             organized[category].push(item);
           }
         });
+
         this.setState({ foodData: organized });
       })
-      .catch(err => console.error("Failed to fetch food data:", err));
+      .catch(err => {
+      console.error("Failed to fetch food data:", err);
+    });
   };
   
   handleDeleteItem = (itemToDelete) => {
@@ -222,6 +233,7 @@ export class Page extends Component {
                 <CardTitle>Categories</CardTitle>
                 <CategorySelect
                   foodData={foodData}
+                  selectedCategory={selectedCategory}
                   onCategoryChange={this.handleCategoryChange}
                 />
               </CardBody>
@@ -234,6 +246,7 @@ export class Page extends Component {
                 <CardTitle>Menu Items</CardTitle>
                 <MenuList
                   selectedCategory={selectedCategory}
+                  selectedMenuItem={selectedMenuItem}
                   foodData={foodData}
                   onMenuItemSelect={this.handleMenuItemSelect}
                 />
@@ -286,7 +299,7 @@ export class Page extends Component {
           </Col>
             
           <Col>
-            <Button onClick={this.toggleAddModal} color="success">
+            <Button onClick={this.toggleAddModal} color="success" disabled={!selectedCategory}>
               Add Item
             </Button>
             <AddFoodItemModal

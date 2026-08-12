@@ -1,5 +1,5 @@
-from flask_restful import Resource, request
-from .db_utils import *
+from flask import request
+from flask_restful import Resource
 from .foods_db import (
     get_all_foods,
     get_foods_by_category,
@@ -40,7 +40,7 @@ class FoodsApi(Resource):
         protein = data.get('protein')
         carbohydrate = data.get('carbohydrate')
 
-        if not food_id or not name or not category:
+        if food_id is None or not name or not category:
             return {'message': 'Missing required fields'}, 400
         
         result = update_food(food_id, name, category, calories, total_fat, saturated_fat, trans_fat, protein, carbohydrate)
@@ -59,7 +59,7 @@ class FoodsApi(Resource):
         protein = data.get('protein')
         carbohydrate = data.get('carbohydrate')
 
-        if not name or not category or not calories:
+        if not name or not category or calories is None:
             return {'message': 'Missing required fields'}, 400
         
         result = create_food(name, category, calories, total_fat, saturated_fat, trans_fat, protein, carbohydrate)

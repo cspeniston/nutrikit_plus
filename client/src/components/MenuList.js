@@ -1,32 +1,38 @@
 import { Component } from "react";
 
 export class MenuList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { selectedMenuItem: null };
-  }
-
   handleSelect = (e) => {
-    const selectedName = e.target.value;
-    const selectedItem = this.props.foodData[this.props.selectedCategory]?.find(item => item.name === selectedName);
-    this.setState({ selectedMenuItem: selectedItem });
+    const selectedId = Number(e.target.value);
+
+    const selectedItem =
+      this.props.foodData[this.props.selectedCategory]?.find(
+        item => item.id === selectedId
+      );
+
     this.props.onMenuItemSelect(selectedItem);
   };
 
   render() {
-    const { selectedCategory, foodData } = this.props;
+    const {
+      selectedCategory,
+      selectedMenuItem,
+      foodData
+    } = this.props;
+
     const menuItems = foodData[selectedCategory] || [];
+
     return (
-        <select
-          size="5"
-          value={this.state.selectedMenuItem?.name || ''}
-          onChange={this.handleSelect}>
-          {menuItems.map((item) => (
-            <option key={item.id} value={item.name}>
-              {item.name}
-            </option>
-          ))}
-        </select>
+      <select
+        size="5"
+        value={selectedMenuItem?.id ?? ''}
+        onChange={this.handleSelect}
+      >
+        {menuItems.map((item) => (
+          <option key={item.id} value={item.id}>
+            {item.name}
+          </option>
+        ))}
+      </select>
     );
   }
 }

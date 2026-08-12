@@ -1,5 +1,4 @@
-from flask_restful import Resource, reqparse, request
-import json
+from flask_restful import Resource, request
 from .db_utils import *
 from .foods_db import (
     get_all_foods,

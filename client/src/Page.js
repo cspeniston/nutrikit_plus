@@ -96,7 +96,6 @@ export class Page extends Component {
 
   handleSaveEditedItem = (updatedItem) => {
     const { selectedCategory } = this.state;
-  
     fetch('/api/foods', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -183,7 +182,7 @@ export class Page extends Component {
   };
   
   handleDeleteItem = (itemToDelete) => {
-    if (!itemToDelete || !itemToDelete.name) return;
+    if (!itemToDelete?.id) return;
   
     fetch('/api/foods', {
       method: 'DELETE',
@@ -194,7 +193,7 @@ export class Page extends Component {
       if (!res.ok) throw new Error("Failed to delete item");
       this.fetchFoodDataFromServer();
       this.setState(prev => ({
-        selectedItems: prev.selectedItems.filter(item => item.name !== itemToDelete.name),
+        selectedItems: prev.selectedItems.filter(item => item.id !== itemToDelete.id),
         selectedToEdit: null,
         selectedSelectedItem: null
       }));

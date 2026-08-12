@@ -21,16 +21,18 @@ def exec_sql_file(path):
     with open(full_path, 'r') as file:
         cur.execute(file.read())
     conn.commit()
-    conn.close()
+    
     cur.close()
+    conn.close()
 
 def exec_get_one(sql, args=None):
     conn = connect()
     cur = conn.cursor()
     cur.execute(sql, args)
     one = cur.fetchone()
-    conn.close()
+   
     cur.close()
+    conn.close()
     return one
 
 def exec_get_all(sql, args=None):
@@ -39,8 +41,9 @@ def exec_get_all(sql, args=None):
     cur.execute(sql, args)
     # https://www.psycopg.org/docs/cursor.html#cursor.fetchall
     list_of_tuples = cur.fetchall()
-    conn.close()
+    
     cur.close()
+    conn.close()
     return list_of_tuples
 
 def exec_commit(sql, args=None):
@@ -49,6 +52,7 @@ def exec_commit(sql, args=None):
     cur = conn.cursor()
     result = cur.execute(sql, args)
     conn.commit()
-    conn.close()
+   
     cur.close()
+    conn.close()
     return result

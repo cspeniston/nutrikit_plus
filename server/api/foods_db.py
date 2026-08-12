@@ -1,4 +1,4 @@
-from .db_utils import *
+from .db_utils import exec_get_all, exec_commit
 
 def get_all_foods():
     command = "SELECT * FROM foods ORDER BY category, name;"
@@ -9,8 +9,17 @@ def get_foods_by_category(category):
     return exec_get_all(command, {'category': category})
 
 def create_food(name, category, calories, total_fat, saturated_fat, trans_fat, protein, carbohydrate):
-    command = """INSERT INTO foods (name, category, calories, totalFat, saturatedFat, transFat, protein, carbohydrate)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
+    command = """INSERT INTO foods (
+                    name,
+                    category,
+                    calories,
+                    total_fat,
+                    saturated_fat,
+                    trans_fat,
+                    protein,
+                    carbohydrate
+                )
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s);"""
     data = (name, category, calories, total_fat, saturated_fat, trans_fat, protein, carbohydrate)
     exec_commit(command, data)
     return "food created"
@@ -20,9 +29,9 @@ def update_food(id, name, category, calories, total_fat, saturated_fat, trans_fa
                 SET name = %s,
                     category = %s,
                     calories = %s,
-                    totalFat = %s,
-                    saturatedFat = %s,
-                    transFat = %s,
+                    total_fat = %s,
+                    saturated_fat = %s,
+                    trans_fat = %s,
                     protein = %s,
                     carbohydrate = %s
                 WHERE id = %s;"""

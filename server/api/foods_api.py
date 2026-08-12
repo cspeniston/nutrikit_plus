@@ -1,7 +1,13 @@
 from flask_restful import Resource, reqparse, request
 import json
 from .db_utils import *
-from api.foods_db import *
+from .foods_db import (
+    get_all_foods,
+    get_foods_by_category,
+    create_food,
+    update_food,
+    delete_food,
+)
 
 class FoodsApi(Resource):
     def get(self):

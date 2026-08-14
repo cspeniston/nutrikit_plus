@@ -1,6 +1,6 @@
-# NutriKit
+# NUTT (Nutrition Utility & Tracking Tool)
 
-NutriKit is a React and Flask food planner for selecting foods and tracking
+NUTT is a React and Flask food planner for selecting foods and tracking
 calories and macronutrients.
 
 ## Requirements
@@ -11,7 +11,7 @@ calories and macronutrients.
 
 ## Database Setup
 
-1. Create a PostgreSQL database named `nutrikit`.
+1. Create a PostgreSQL database named `NUTT`.
 2. Copy the database configuration template:
 
    cp server/api/db.example.yml server/api/db.yml

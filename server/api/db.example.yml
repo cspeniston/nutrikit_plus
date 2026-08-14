@@ -1,5 +1,5 @@
 host: "localhost"
-database: "nutrikit"
+database: "nutt"
 user: "your_username"
 password: "your_password"
 port: "5432"

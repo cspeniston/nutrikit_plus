@@ -214,15 +214,18 @@ export class Page extends Component {
   
 
   render() {
-    const { selectedCategory, 
-            selectedItems, 
-            foodData, 
-            selectedSelectedItem, 
-            selectedToEdit, 
-            isEditFoodModalOpen, 
-            isAddFoodModalOpen, 
-            calorieGoal, 
-            progress } = this.state;
+    const {
+      selectedCategory,
+      selectedMenuItem,
+      selectedItems,
+      foodData,
+      selectedSelectedItem,
+      selectedToEdit,
+      isEditFoodModalOpen,
+      isAddFoodModalOpen,
+      calorieGoal,
+      progress
+    } = this.state;
 
     return (
       <Container>
